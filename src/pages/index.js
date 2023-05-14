@@ -7,7 +7,7 @@ export default function LoginPage() {
   const onSubmit = async data => {
     const res = await axios.post('/api/login', data);
     if(res.data.success === true){
-      alert('成功しました')
+      alert('ログインに成功しました\n')
     }else if (res.data.success === false && res.data.error === false) {
       alert('ログインに失敗しました')
     } else {

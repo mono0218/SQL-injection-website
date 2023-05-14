@@ -16,24 +16,32 @@ const config = {
 
 export default async function handler(req, res) {
     if (req.method === 'POST') {
-      try {
-        const poolConnection = await sql.connect(config);
-        const result = await poolConnection.request().query(`SELECT * FROM users WHERE username = '${req.body.name}'  AND password ='${req.body.pass}';`)
-        if (result.rowsAffected > 0) {
-            res.json({ success: true });
-        } else {
+      let list =["SELECT","INSERT","UPDATE","DELETE","CREATE","DROP","PRIMARY KEY","select","insert","update","delete","create","drop","primary key"]
+      
+      if(list.includes(req.body.name) === -1 || list.includes(req.body.pass) === -1){
+        try {
+          const poolConnection = await sql.connect(config);
+
+          const result = await poolConnection.request().query(`SELECT * FROM users WHERE username = '${req.body.name}'  AND password ='${req.body.pass}';`)
+          if (result.rowsAffected > 0) {
+              res.json({ success: true });
+          } else {
+              res.json({ success: false ,error: false});
+          }
+
+        } catch (error) {
+          if(error.code ==='EREQUEST'){
             res.json({ success: false ,error: false});
+          }else{
+            res.json({ success: false ,error: true});
+          }
         }
 
-      } catch (error) {
-        if(error.code ==='EREQUEST'){
-          res.json({ success: false ,error: false});
-        }else{
-          res.json({ success: false ,error: true});
-        }
+      }else{
+        res.json({ success: false ,error: true});
       }
-
-      } else {
-        res.status(404).json({ message: 'Not found' });
-      }
+      
+    } else {
+      res.status(404).json({ message: 'Not found' });
+    }
   }
