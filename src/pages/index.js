@@ -1,5 +1,7 @@
 import { useForm } from "react-hook-form";
 import axios from 'axios';
+import styles from '../styles/index.module.css'
+import { Card ,Input,Spacer} from '@nextui-org/react';
 
 export default function LoginPage() {
   const { register, handleSubmit, watch, formState: { errors } } = useForm();
@@ -15,19 +17,17 @@ export default function LoginPage() {
     }
   }
   return (
-    <div>
-      <h1>Login Page</h1>
-      <form onSubmit={handleSubmit(onSubmit)}>
-      {/* register your input into the hook by invoking the "register" function */}
-      <input  {...register("name",{ required: true })} />
-        
-      {/* include validation with required or other standard HTML validation rules */}
-      <input {...register("pass", { required: true })} />
-      {/* errors will return when field validation fails  */}
-      {errors.exampleRequired && <span>This field is required</span>}
-      
-      <input type="submit" />
-    </form>
+    <div className={styles.body} >
+      <Card className={styles.card} css={{ mw: "400px" }}>
+          <h1>Login Page</h1>
+        <form onSubmit={handleSubmit(onSubmit)}>
+            <Input {...register("name",{ required: true })} />
+            <Spacer y={2.5} />
+            <Input {...register("pass", { required: true })} />
+            <Spacer y={2.5} />
+            <Input type="submit" />
+        </form>
+      </Card>
     </div>
   );
 }
